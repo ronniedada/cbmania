@@ -1,0 +1,122 @@
+extends layout
+
+block header
+  h1 cbmania #{version}
+  link(rel="stylesheet", href="/stylesheets/style.css")
+  link(rel="stylesheet", href="/stylesheets/jquery.terminal.css")
+  script(src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js")
+  script(src="/javascripts/jquery.mousewheel-min.js")
+  script(src="/javascripts/jquery.terminal-0.4.21.min.js")
+  script(src="http://127.0.0.1:#{port}/nowjs/now.js")
+
+block intro
+  p Couchbase interactive terminal
+  p Type couchbase commands below, or get
+    a(href=download) couchbase server
+    to expolore full features
+
+block term
+  #code
+  ul(id="wall")
+    li  &nbsp;
+    li  &nbsp;
+    li  &nbsp
+
+block footer
+  #footer
+    p Couchbase Inc 2012 all rights reserved
+
+  script
+
+    function add_sticker(id, text)
+    {
+            var el = $('#' + id);
+
+            var h = el.height();
+
+            el.css({
+                    height:   h,
+                    overflow: 'hidden'
+            });
+
+            var ulPaddingTop    = parseInt(el.css('padding-top'));
+            var ulPaddingBottom = parseInt(el.css('padding-bottom'));
+
+            el.prepend('<li>' + text + '</li>');
+
+            var first = $('li:first', el);
+            var last  = $('li:last',  el);
+
+            var foh = first.outerHeight();
+
+            var heightDiff = foh - last.outerHeight();
+
+            var oldMarginTop = first.css('margin-top');
+
+            first.css({
+                    marginTop: 0 - foh,
+                    position:  'relative',
+                    top:       0 - ulPaddingTop
+            });
+
+            last.css('position', 'relative');
+
+            el.animate({ height: h + heightDiff }, 1500)
+
+            first.animate({ top: 0 }, 250, function() {
+                    first.animate({ marginTop: oldMarginTop }, 1000, function() {
+                            last.animate({ top: ulPaddingBottom }, 250, function() {
+                                    last.remove();
+
+                                    el.css({
+                                            height:   'auto',
+                                            overflow: 'visible'
+                                    });
+                            });
+                    });
+            });
+    }
+
+    rname = Math.random().toString(36).substring(7)
+    now.name = prompt("Please enter your name:", rname);
+
+    now.receiveMessage = function(name, message){
+        add_sticker("wall", name + ": " + message)
+    }
+
+    function parse(command) {
+        var arr = command.replace(/[^\w\s]|_/g,
+                                 function ($1) { return " " + $1 + " ";})
+                    .replace(/[ ]+/g, " ").split(" ");
+        return arr
+    }
+
+    jQuery(function($, undefined) {
+        $("#code").terminal(function(command, term) {
+            if (command !== "") {
+                try {
+                    arr = parse(command)
+                    $.get(arr[0], {"key": arr[1], "val": arr[2]},
+                        function(res){
+                            if (res !== undefined) {
+                                if(res.error) {
+                                  term.error("failed: " + res.msg);
+                                } else {
+                                  term.echo("succeeded: " + res.msg)
+                                  now.distributeMessage(command);
+                                }
+                            }
+                    }, "json");
+                } catch(e) {
+                    term.error(new String(e));
+                }
+            } else {
+              term.error("invalid command");
+            }
+        }, {
+            greetings: "Couchbase is running ...",
+            name: "cbmania",
+            width: $("#code").width(),
+            height: $("#code").height(),
+            prompt: now.name + "> "});
+    });

@@ -1,0 +1,23 @@
+body {
+  padding: 50px;
+  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+}
+#code {
+  width: 50%;
+  height: 250px;
+}
+#wall {
+  width: 20%;
+  list-style: none;
+  padding: 1em;
+  margin: 1em 0;
+}
+#wall li {
+  margin: 0.25em;
+  padding: 0.5em;
+  border-bottom: dashed 1px #808080;
+}
+#footer {
+  fond: 14px;
+  color: #a52a2a;
+}
