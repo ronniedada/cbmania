@@ -24,8 +24,8 @@ Dependencies
 
 Build & Start
 ------------
-   npm install
-   node app.js
+    npm install
+    node app.js
 
 point web browser at http://127.0.0.1:5206
 
