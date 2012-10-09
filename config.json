@@ -2,10 +2,12 @@
     "version": "0.1",
     "download": "http://www.couchbase.com/couchbase-server/beta",
     "http": {
-        "port": 5206
+        "port": 5206,
+        "proxy-port": 5207
     },
     "cb": {
-        "host": "10.3.121.217:8091",
+        "host": "10.3.121.217",
+        "port": 8091,
         "username": "Administrator",
         "password": "password",
         "bucket": "default"

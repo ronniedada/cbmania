@@ -7,28 +7,50 @@ block header
   script(src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js")
   script(src="/javascripts/jquery.mousewheel-min.js")
   script(src="/javascripts/jquery.terminal-0.4.21.min.js")
+  script(src="/javascripts/splitter.js")
   script(src="http://127.0.0.1:#{port}/nowjs/now.js")
 
 block intro
   p Couchbase interactive terminal
-  p Type couchbase commands below, or get
-    a(href=download) couchbase server
-    to expolore full features
 
-block term
-  #code
-  ul(id="wall")
-    li  &nbsp;
-    li  &nbsp;
-    li  &nbsp
+block main
+  #splitPanes
+    #leftPane
+      #code
+      ul(id="wall")
+        li  &nbsp;
+        li  &nbsp;
+        li  &nbsp
+    #rightPane
+      #console
+        iframe(src="http://localhost:5207", width="100%", height="100%",
+               onLoad="autoResize('rightPane');")
 
 block footer
   #footer
     p Couchbase Inc 2012 all rights reserved
 
   script
+    function autoResize(id){
+        var newheight;
+        var newwidth;
 
-    function add_sticker(id, text)
+        if(document.getElementById){
+            newheight = document.getElementById(id)
+                        .contentWindow.document.body.scrollHeight;
+            newwidth = document.getElementById(id)
+                        .contentWindow.document.body.scrollWidth;
+        }
+
+        document.getElementById(id).height= (newheight) + "px";
+        document.getElementById(id).width= (newwidth) + "px";
+    }
+
+    $().ready(function(){
+        $("#splitPanes").splitter();
+    });
+
+    function addSticker(id, text)
     {
             var el = $('#' + id);
 
@@ -81,7 +103,7 @@ block footer
     now.name = prompt("Please enter your name:", rname);
 
     now.receiveMessage = function(name, message){
-        add_sticker("wall", name + ": " + message)
+        addSticker("wall", name + ": " + message)
     }
 
     function parse(command) {

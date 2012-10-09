@@ -11,7 +11,7 @@ exports.register = function(app, nconf_in) {
     app.get("/del", this.del)
     app.all("*", this.all)
     var driver = require('couchbase');
-    cb = new driver.Couchbase(nconf_in.get("cb:host"),
+    cb = new driver.Couchbase(nconf_in.get("cb:host") + ":" + nconf_in.get("cb:port"),
                               nconf_in.get("cb:username"),
                               nconf_in.get("cb:password"),
                               nconf_in.get("cb:bucket"));
