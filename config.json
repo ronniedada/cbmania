@@ -1,5 +1,5 @@
 {
-    "version": "0.1",
+    "version": "0.2",
     "download": "http://www.couchbase.com/couchbase-server/beta",
     "http": {
         "port": 5206,
