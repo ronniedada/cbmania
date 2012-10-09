@@ -29,7 +29,9 @@ nconf.defaults({
 
 app = express();
 cbProxy = proxy.createServer(nconf.get("cb:port"), nconf.get("cb:host"))
-               .listen(nconf.get("http:proxy-port"))
+               .listen(nconf.get("http:proxy-port"), function() {
+    console.log("cbmania listening on proxy port " + nconf.get("http:proxy-port"));
+} )
 
 app.configure(function(){
   app.set("views", __dirname + "/views");

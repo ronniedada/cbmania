@@ -23,7 +23,7 @@ block main
         li  &nbsp
     #rightPane
       #console
-        iframe(src="http://localhost:5207", width="100%", height="100%",
+        iframe(src="http://#{cbhost}:#{cbport}", width="100%", height="100%",
                onLoad="autoResize('rightPane');")
 
 block footer
