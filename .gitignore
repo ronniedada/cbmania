@@ -2,3 +2,4 @@ package.json
 .project
 .cproject
 node_modules
+public/stylesheets/style.css
