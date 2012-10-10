@@ -7,7 +7,8 @@ var express = require("express")
   , http = require("http")
   , routes = require("./routes.js")
   , nconf = require("nconf")
-  , proxy = require("http-proxy");
+  , proxy = require("http-proxy")
+  , os = require("os");
 
 nconf.argv().env();
 nconf.file({ file: "config.json" });
@@ -15,6 +16,7 @@ nconf.defaults({
     "version": "0.1",
     "download": "http://www.couchbase.com/couchbase-server/beta",
     "http": {
+        "host": os.hostname(),
         "port": 5206,
         "proxy-port": 5207
     },

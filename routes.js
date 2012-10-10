@@ -24,7 +24,9 @@ exports.index = function(req, res){
     res.render('index', {
         version: nconf.get("version"),
         download: nconf.get("download"),
+        host: nconf.get("http:host"),
         port: nconf.get("http:port"),
+        proxyPort: nconf.get("http:proxy-port"),
         cbhost: nconf.get("cb:host"),
         cbport: nconf.get("cb:port")
     });
