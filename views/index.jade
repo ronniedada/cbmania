@@ -1,17 +1,41 @@
 extends layout
 
 block header
-  h1 cbmania #{version}
   link(rel="stylesheet", href="/stylesheets/style.css")
   link(rel="stylesheet", href="/stylesheets/jquery.terminal.css")
+  link(rel="stylesheet", href="/stylesheets/bx_styles.css")
   script(src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js")
   script(src="/javascripts/jquery.mousewheel-min.js")
   script(src="/javascripts/jquery.terminal-0.4.21.min.js")
   script(src="/javascripts/splitter.js")
+  script(src="/javascripts/jquery.bxSlider.min.js")
   script(src="/nowjs/now.js")
 
 block intro
-  p Couchbase interactive terminal
+  #splitIntros
+    #leftIntro
+      h1 cbmania
+      p Couchbase interactive terminal
+      p ver #{version}
+    #rightIntro
+      ul(id="tutorial")
+        li 
+          #right 
+            h2 Store a document with key
+            p On terminal: type 'set [key] [val]'. Example: set mykey 123
+            p On couchbase web interface: watch ops/sec under tab [Data Buckets] -> [default]
+        li 
+          #right 
+            h2 Retrieve a document by key
+            p On terminal: type 'get [key]'. Example: get mykey
+            p On couchbase web interface: watch ops/sec under tab [Data Buckets] -> [default]
+        li 
+          #right 
+            h2 Delete a document by key
+            p On terminal: type 'del [key]'. Example: del mykey
+            p On couchbase web interface: watch ops/sec under tab [Data Buckets] -> [default]
+      #downloads
+        
 
 block main
   #splitPanes
@@ -20,7 +44,7 @@ block main
       ul(id="wall")
         li  &nbsp;
         li  &nbsp;
-        li  &nbsp
+        li  &nbsp;
     #rightPane
       #console
         iframe(src="http://#{host}:#{proxyPort}", width="100%", height="100%",
@@ -45,6 +69,22 @@ block footer
         document.getElementById(id).height= (newheight) + "px";
         document.getElementById(id).width= (newwidth) + "px";
     }
+
+    $().ready(function(){
+        $("#splitIntros").splitter({
+            minLeft: 450, maxLeft: 450
+        });
+    });
+
+    $().ready(function(){
+        $("#rightIntro").splitter({
+            minRight: 400, maxRight: 400
+        });
+    });
+
+    $(document).ready(function(){
+        $('#tutorial').bxSlider();
+    });
 
     $().ready(function(){
         $("#splitPanes").splitter();
